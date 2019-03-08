@@ -6,7 +6,7 @@ import Bolt.Graphics.OpenGL.GlHelper;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 
-import Bolt.Color;
+import Bolt.Core.Color;
 
 public class Canvas {
 

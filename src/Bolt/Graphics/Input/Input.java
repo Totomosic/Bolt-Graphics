@@ -1,6 +1,6 @@
 package Bolt.Graphics.Input;
 
-import Bolt.Vector2f;
+import Bolt.Core.Vector2f;
 import Bolt.Graphics.Canvas;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;

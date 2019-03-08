@@ -1,6 +1,6 @@
 package Bolt.Graphics.OpenGL;
 
-import Bolt.Vector2f;
+import Bolt.Core.Vector2f;
 
 public class Vertex
 {

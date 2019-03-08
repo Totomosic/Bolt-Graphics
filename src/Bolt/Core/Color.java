@@ -1,4 +1,4 @@
-package Bolt;
+package Bolt.Core;
 
 public class Color {
 

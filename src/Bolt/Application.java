@@ -15,7 +15,7 @@ public class Application {
 
     public Application()
     {
-        m_Canvas = new Canvas(1280, 720, "Bolt-Bolt.Graphics");
+        m_Canvas = new Canvas(1280, 720, "Bolt-Graphics");
         m_ShouldClose = false;
         s_Instance = this;
     }
