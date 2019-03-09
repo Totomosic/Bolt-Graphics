@@ -1,4 +1,4 @@
-package Bolt.Time;
+package Bolt.Core.Time;
 
 public class Timeline
 {

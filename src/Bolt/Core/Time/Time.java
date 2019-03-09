@@ -1,4 +1,4 @@
-package Bolt.Time;
+package Bolt.Core.Time;
 
 import org.lwjgl.glfw.GLFW;
 

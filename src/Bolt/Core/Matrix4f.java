@@ -68,6 +68,14 @@ public class Matrix4f
         return result;
     }
 
+    public static Vector2f Mul(Matrix4f left, Vector2f right)
+    {
+        Vector2f result = new Vector2f();
+        result.x = left.GetElement(0, 0) * right.x + left.GetElement(0, 1) * right.y + left.GetElement(0, 3) * 1.0f;
+        result.y = left.GetElement(1, 0) * right.x + left.GetElement(1, 1) * right.y + left.GetElement(1, 3) * 1.0f;
+        return result;
+    }
+
     public static Matrix4f Inverse(Matrix4f other)
     {
         float[] inv = new float[16];
@@ -226,7 +234,7 @@ public class Matrix4f
         result.SetElement(0, 0, x);
         result.SetElement(1, 1, y);
         result.SetElement(2, 2, z);
-        result.SetElement(3, 3, 0);
+        result.SetElement(3, 3, 1.0f);
         return result;
     }
 
@@ -247,6 +255,16 @@ public class Matrix4f
     public static Matrix4f Translation(float x, float y)
     {
         return Translation(x, y, 0.0f);
+    }
+
+    public static Matrix4f RotationZ(float rotation)
+    {
+        Matrix4f result = Matrix4f.Identity();
+        result.SetElement(0, 0, (float)+Math.cos(rotation));
+        result.SetElement(0, 1, (float)-Math.sin(rotation));
+        result.SetElement(1, 0, (float)+Math.sin(rotation));
+        result.SetElement(1, 1, (float)+Math.cos(rotation));
+        return result;
     }
 
     public static Matrix4f Orthographic(float left, float right, float bottom, float top, float nearPlane, float farPlane)
