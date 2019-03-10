@@ -11,6 +11,7 @@ public class VertexArray
     private final int m_Id;
     private VertexBuffer m_Buffer;
     private IndexBuffer m_IndexBuffer;
+    private int m_RenderMode;
 
     public VertexArray(int vertexCount, int indexCount)
     {
@@ -18,6 +19,7 @@ public class VertexArray
         GlHelper.CheckErrors("glGenVertexArrays");
         m_Buffer = new VertexBuffer(vertexCount * BufferLayout.Size());
         m_IndexBuffer = new IndexBuffer(indexCount);
+        m_RenderMode = GL41.GL_TRIANGLES;
         SetupVertexBuffer();
     }
 
@@ -34,6 +36,11 @@ public class VertexArray
     public IndexBuffer GetIndexBuffer()
     {
         return m_IndexBuffer;
+    }
+
+    public int GetRenderMode()
+    {
+        return m_RenderMode;
     }
 
     public void Bind()
@@ -54,6 +61,23 @@ public class VertexArray
         {
             m_IndexBuffer.Unbind();
         }
+    }
+
+    public Vertex[] GetVertices()
+    {
+        Vertex[] vertices = new Vertex[GetVertexBuffer().VertexCount()];
+        ByteBuffer vertexData = BufferUtils.createByteBuffer(vertices.length * BufferLayout.Size());
+        GetVertexBuffer().Download(vertexData);
+        for (int i = 0; i < vertices.length; i++)
+        {
+            float x = vertexData.getFloat();
+            float y = vertexData.getFloat();
+            float tx = vertexData.getFloat();
+            float ty = vertexData.getFloat();
+            Vertex v = new Vertex(x, y, tx, ty);
+            vertices[i] = v;
+        }
+        return vertices;
     }
 
     public void SetIndices(int[] indices)
@@ -79,6 +103,11 @@ public class VertexArray
         }
         data.flip();
         m_Buffer.Upload(data);
+    }
+
+    public void SetRenderMode(int renderMode)
+    {
+        m_RenderMode = renderMode;
     }
 
     private void SetupVertexBuffer()

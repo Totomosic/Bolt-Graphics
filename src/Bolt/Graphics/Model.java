@@ -2,16 +2,15 @@ package Bolt.Graphics;
 
 import Bolt.Graphics.OpenGL.Vertex;
 import Bolt.Graphics.OpenGL.VertexArray;
-import org.lwjgl.opengl.GL41;
 
 public class Model
 {
 
-    public static final Model Square = new Model(new Vertex[]{ new Vertex(-0.5f, 0.5f, 0, 1),
-                                                                new Vertex(-0.5f, -0.5f, 0, 0),
-                                                                new Vertex(0.5f, -0.5f, 1, 0),
-                                                                new Vertex(0.5f, 0.5f, 1, 1) },
-                                                    new int[]{ 0, 1, 2, 0, 2, 3 });
+    public static final Model Square = ModelFactory.CreateRectangle(1, 1);
+    public static final Model Circle = ModelFactory.CreateEllipse(2, 2, 1000);
+    public static final Model Line = Square;
+    public static final Model WireframeSquare = ModelFactory.CreateWireframeRectangle(1, 1);
+    public static final Model WireframeCircle = ModelFactory.CreateWireframeEllipse(2, 2, 1000);
 
     private final VertexArray m_Vertices;
 
@@ -30,11 +29,6 @@ public class Model
     public int GetRenderCount()
     {
         return m_Vertices.GetIndexBuffer().IndexCount();
-    }
-
-    public int GetRenderMode()
-    {
-        return GL41.GL_TRIANGLES;
     }
 
 }

@@ -2,6 +2,7 @@ package Bolt.Graphics;
 
 import Bolt.Graphics.Input.Input;
 import Bolt.Graphics.Input.WindowCloseHandler;
+import Bolt.Graphics.Input.WindowResizeHandler;
 import Bolt.Graphics.OpenGL.GlHelper;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
@@ -81,6 +82,14 @@ public class Window
         GLFW.glfwSwapBuffers(m_Window);
     }
 
+    public void UpdateSize(int width, int height)
+    {
+        GL41.glViewport(0, 0, width, height);
+        GlHelper.CheckErrors("glViewport");
+        m_Width = width;
+        m_Height = height;
+    }
+
     private long CreateWindow()
     {
         if (!s_InitializedGL)
@@ -91,6 +100,7 @@ public class Window
                 return 0;
             }
         }
+        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 8);
         long window = GLFW.glfwCreateWindow(m_Width, m_Height, m_Title, 0, 0);
         GLFW.glfwMakeContextCurrent(window);
         GLFW.glfwShowWindow(window);
@@ -100,6 +110,7 @@ public class Window
         GLFW.glfwSetKeyCallback(window, Input.GetKeyHandler());
         GLFW.glfwSetMouseButtonCallback(window, Input.GetMouseHandler());
         GLFW.glfwSetWindowCloseCallback(window, new WindowCloseHandler());
+        GLFW.glfwSetFramebufferSizeCallback(window, new WindowResizeHandler());
 
         return window;
     }

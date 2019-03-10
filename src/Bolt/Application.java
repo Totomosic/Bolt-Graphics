@@ -1,7 +1,7 @@
 package Bolt;
 
 import Bolt.Core.Time.Time;
-import Bolt.Graphics.Window;
+import Bolt.Graphics.Canvas;
 import Bolt.Graphics.Input.Input;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -10,12 +10,13 @@ public class Application {
 
     private static Application s_Instance = null;
 
-    private final Window m_Window;
+    private final Canvas m_Canvas;
     private boolean m_ShouldClose;
 
     public Application()
     {
-        m_Window = new Window(1280, 720, "Bolt-Graphics");
+        // Window is only 1280x720 but canvas resolution is 1920x1080
+        m_Canvas = new Canvas(1280, 720, 1920, 1080, "Bolt-Graphics");
         m_ShouldClose = false;
         s_Instance = this;
     }
@@ -25,9 +26,9 @@ public class Application {
         return s_Instance;
     }
 
-    public Window GetCanvas()
+    public Canvas GetCanvas()
     {
-        return m_Window;
+        return m_Canvas;
     }
 
     public void Init()
@@ -40,7 +41,7 @@ public class Application {
 
     }
 
-    public void Render(Window window)
+    public void Render(Canvas canvas)
     {
 
     }
@@ -59,9 +60,10 @@ public class Application {
             Time.Update();
             GLFW.glfwPollEvents();
             Update();
-            m_Window.Clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-            Render(m_Window);
-            m_Window.SwapBuffers();
+            m_Canvas.GetWindow().Clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            Render(m_Canvas);
+            m_Canvas.BlitToWindow();
+            m_Canvas.GetWindow().SwapBuffers();
             Input.Update();
         }
     }

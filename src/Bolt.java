@@ -1,34 +1,18 @@
-import Bolt.Graphics.Window;
-import Bolt.Graphics.Renderer;
 import Bolt.Application;
 
 import Bolt.Core.*;
 import Bolt.Scene.*;
 import Bolt.Graphics.*;
-import java.io.File;
-import java.io.IOException;
 
 public class Bolt extends Application
 {
 
-    private Scene scene;
+    private Texture2D image;
 
     @Override
     public void Init()
     {
-        System.out.println(System.getProperty("user.dir"));
-        scene = SceneManager.CreateScene();
-        Layer layer = scene.CreateLayer();
-        layer.AddRenderable(Sprite.Rectangle(300, 300, 300, 300));
-        Renderable renderable = layer.AddRenderable(Sprite.Rectangle(400, 400, 300, 300, Color.White));
-        try
-        {
-            renderable.GetMesh().GetMaterial().SetTexture(new Texture2D(new File("res/test.jpeg")));
-        }
-        catch (IOException e)
-        {
-            System.out.println("IO Error " + e.getMessage());
-        }
+        image = Texture2D.Load("res/test.jpeg");
     }
 
     @Override
@@ -38,9 +22,11 @@ public class Bolt extends Application
     }
 
     @Override
-    public void Render(Window window)
+    public void Render(Canvas canvas)
     {
-        Renderer.RenderScene(window);
+        canvas.Fill(new Color(175, 175, 175, 255));
+        Sprite window = canvas.FillRect(50, canvas.GetHeight() - 750, 700 * canvas.GetAspect(), 700, Color.Black);
+        canvas.FillRect(window.TopRight().x + 50, window.TopRight().y - (canvas.GetHeight() - 100), canvas.GetWidth() - window.TopRight().x - 100, canvas.GetHeight() - 100, Color.White);
     }
 
     public static void main(String[] args)

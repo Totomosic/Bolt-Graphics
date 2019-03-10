@@ -117,4 +117,19 @@ public class Texture2D
         Unbind(0);
     }
 
+    public static Texture2D Load(String filename)
+    {
+        File f = new File(filename);
+        try
+        {
+            return new Texture2D(f);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Texture Load IO Exception");
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
 }

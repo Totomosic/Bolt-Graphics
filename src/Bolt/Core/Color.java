@@ -7,6 +7,9 @@ public class Color {
     public static final Color Red = new Color(255, 0, 0, 255);
     public static final Color Green = new Color(0, 255, 0, 255);
     public static final Color Blue = new Color(0, 0, 255, 255);
+    public static final Color Yellow = new Color(255, 255, 0, 255);
+    public static final Color Cyan = new Color(0, 255, 255, 255);
+    public static final Color Magenta = new Color(255, 0, 255, 255);
 
     public float r;
     public float g;
@@ -24,6 +27,11 @@ public class Color {
     public Color(int r, int g, int b)
     {
         this(r, g, b, 255);
+    }
+
+    public static Color FromFloats(float r, float g, float b, float a)
+    {
+        return new Color((int)r * 255, (int)g * 255, (int)b * 255, (int)a * 255);
     }
 
 }

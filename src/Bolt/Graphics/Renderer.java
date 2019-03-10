@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL41;
 public class Renderer
 {
 
-    public static void Render(Renderable renderable, Camera camera, Window window)
+    public static void Render(Renderable renderable, Camera camera)
     {
         Material material = renderable.GetMesh().GetMaterial();
         Shader shader = material.GetShader();
@@ -24,34 +24,35 @@ public class Renderer
         }
         Model model = renderable.GetMesh().GetModel();
         model.GetVertexArray().Bind();
-        GL41.glDrawElements(model.GetRenderMode(), model.GetRenderCount(), GL41.GL_UNSIGNED_INT, 0);
+        GL41.glDrawElements(model.GetVertexArray().GetRenderMode(), model.GetRenderCount(), GL41.GL_UNSIGNED_INT, 0);
         GlHelper.CheckErrors("glDrawElements");
     }
 
-    public static void Render(Layer layer, Window window)
+    public static void Render(Layer layer)
     {
         for (Renderable r : layer.GetRenderables())
         {
-            Render(r, layer.GetCamera(), window);
+            Render(r, layer.GetCamera());
         }
     }
 
-    public static void Render(Scene scene, Window window)
+    public static void Render(Scene scene)
     {
         for (Layer layer : scene.GetLayers())
         {
             if (layer.IsEnabled())
             {
-                Render(layer, window);
+                Render(layer);
             }
+            GL41.glClear(GL41.GL_DEPTH_BUFFER_BIT);
         }
     }
 
-    public static void RenderScene(Window window)
+    public static void RenderScene()
     {
         if (SceneManager.CurrentScene() != null)
         {
-            Render(SceneManager.CurrentScene(), window);
+            Render(SceneManager.CurrentScene());
         }
     }
 

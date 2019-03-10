@@ -15,7 +15,9 @@ public class Camera extends GameObject
 
     public Camera()
     {
-        this(Matrix4f.Orthographic(0.0f, (float)Application.Instance().GetCanvas().GetWidth(), 0.0f, (float)Application.Instance().GetCanvas().GetHeight(), -100.0f, 100.0f));
+        this(Matrix4f.Orthographic(0.0f, (float)Application.Instance().GetCanvas().GetWindow().GetWidth(),
+                                   0.0f, (float)Application.Instance().GetCanvas().GetWindow().GetHeight(),
+                                   -100.0f, 100.0f));
     }
 
     public Matrix4f GetViewMatrix()
