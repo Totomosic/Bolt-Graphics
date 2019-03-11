@@ -105,12 +105,14 @@ public class Window
         GLFW.glfwMakeContextCurrent(window);
         GLFW.glfwShowWindow(window);
         GL.createCapabilities();
-        Input.Initialize(this);
 
         GLFW.glfwSetKeyCallback(window, Input.GetKeyHandler());
         GLFW.glfwSetMouseButtonCallback(window, Input.GetMouseHandler());
         GLFW.glfwSetWindowCloseCallback(window, new WindowCloseHandler());
         GLFW.glfwSetFramebufferSizeCallback(window, new WindowResizeHandler());
+
+        GL41.glEnable(GL41.GL_BLEND);
+        GL41.glBlendFunc(GL41.GL_SRC_ALPHA, GL41.GL_ONE_MINUS_SRC_ALPHA);
 
         return window;
     }

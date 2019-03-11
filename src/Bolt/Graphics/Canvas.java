@@ -3,6 +3,7 @@ package Bolt.Graphics;
 import Bolt.Core.Color;
 import Bolt.Core.Matrix4f;
 import Bolt.Core.Vector2f;
+import Bolt.Graphics.Input.Input;
 import Bolt.Graphics.OpenGL.Shader;
 import Bolt.Scene.Camera;
 import Bolt.Scene.Layer;
@@ -22,6 +23,7 @@ public class Canvas
     public Canvas(int windowWidth, int windowHeight, int canvasWidth, int canvasHeight, String title)
     {
         m_Window = new Window(windowWidth, windowHeight, title);
+        Input.Initialize(this);
         m_Camera = new Camera(Matrix4f.Orthographic(0, canvasWidth, 0, canvasHeight, -100, 100));
         m_Width = canvasWidth;
         m_Height = canvasHeight;
@@ -46,11 +48,6 @@ public class Canvas
     public float GetAspect()
     {
         return (float)GetWidth() / (float)GetHeight();
-    }
-
-    public void StrokeWeight(float weight)
-    {
-        GL41.glLineWidth(weight);
     }
 
     public Sprite Fill(Color color)

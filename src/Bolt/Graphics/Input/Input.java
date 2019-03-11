@@ -1,7 +1,7 @@
 package Bolt.Graphics.Input;
 
 import Bolt.Core.Vector2f;
-import Bolt.Graphics.Window;
+import Bolt.Graphics.Canvas;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Input {
 
-    private static Window s_Window;
+    private static Canvas s_Canvas;
     private static final List<Keycode> s_PressedKeys = new ArrayList<>();
     private static final List<Keycode> s_ReleasedKeys = new ArrayList<>();
     private static final List<MouseButton> s_PressedButtons = new ArrayList<>();
@@ -20,9 +20,9 @@ public class Input {
     private static final KeyboardHandler s_KeyboardHandler = new KeyboardHandler(s_PressedKeys, s_ReleasedKeys);
     private static final MouseHandler s_MouseHandler = new MouseHandler(s_PressedButtons, s_ReleasedButtons);
 
-    public static void Initialize(Window window)
+    public static void Initialize(Canvas canvas)
     {
-        s_Window = window;
+        s_Canvas = canvas;
     }
 
     public static KeyboardHandler GetKeyHandler()
@@ -37,13 +37,13 @@ public class Input {
 
     public static boolean KeyDown(Keycode key)
     {
-        int action = GLFW.glfwGetKey(s_Window.GetNativeWindow(), key.glfwKeycode);
+        int action = GLFW.glfwGetKey(s_Canvas.GetWindow().GetNativeWindow(), key.glfwKeycode);
         return action == GLFW.GLFW_PRESS || action == GLFW.GLFW_REPEAT;
     }
 
     public static boolean KeyUp(Keycode key)
     {
-        int action = GLFW.glfwGetKey(s_Window.GetNativeWindow(), key.glfwKeycode);
+        int action = GLFW.glfwGetKey(s_Canvas.GetWindow().GetNativeWindow(), key.glfwKeycode);
         return action == GLFW.GLFW_RELEASE;
     }
 
@@ -59,13 +59,13 @@ public class Input {
 
     public static boolean MouseDown(MouseButton button)
     {
-        int action = GLFW.glfwGetMouseButton(s_Window.GetNativeWindow(), button.glfwButtonCode);
+        int action = GLFW.glfwGetMouseButton(s_Canvas.GetWindow().GetNativeWindow(), button.glfwButtonCode);
         return action == GLFW.GLFW_PRESS || action == GLFW.GLFW_REPEAT;
     }
 
     public static boolean MouseUp(MouseButton button)
     {
-        int action = GLFW.glfwGetMouseButton(s_Window.GetNativeWindow(), button.glfwButtonCode);
+        int action = GLFW.glfwGetMouseButton(s_Canvas.GetWindow().GetNativeWindow(), button.glfwButtonCode);
         return action == GLFW.GLFW_RELEASE;
     }
 
@@ -79,13 +79,21 @@ public class Input {
         return s_ReleasedButtons.contains(button);
     }
 
+    // Return Mouse position from Bottom-Left of Canvas
+    public static Vector2f CanvasMousePosition()
+    {
+        Vector2f windowPosition = WindowMousePosition();
+        Vector2f windowNorm = Vector2f.Div(windowPosition, new Vector2f(s_Canvas.GetWindow().GetWidth(), s_Canvas.GetWindow().GetHeight()));
+        return Vector2f.Mul(windowNorm, new Vector2f(s_Canvas.GetWidth(), s_Canvas.GetHeight()));
+    }
+
     // Return Mouse position from Bottom-Left of Window
-    public static Vector2f MousePosition()
+    public static Vector2f WindowMousePosition()
     {
         DoubleBuffer xBuf = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yBuf = BufferUtils.createDoubleBuffer(1);
-        GLFW.glfwGetCursorPos(s_Window.GetNativeWindow(), xBuf, yBuf);
-        return new Vector2f((float)xBuf.get(), s_Window.GetHeight() - (float)yBuf.get());
+        GLFW.glfwGetCursorPos(s_Canvas.GetWindow().GetNativeWindow(), xBuf, yBuf);
+        return new Vector2f((float)xBuf.get(), s_Canvas.GetWindow().GetHeight() - (float)yBuf.get());
     }
 
     public static void Update()
